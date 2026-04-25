@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Урок 1 — Том II</title>
+
+<style>
+  /* ====================================================================
+     APPLE.COM СТИЛЬ
+     - SF Pro как у Apple (через -apple-system)
+     - Белый фон, тёмный графитовый текст
+     - Терракотовый акцент (один)
+     - Огромные тонкие заголовки, безграничное пространство
+     - Mobile-first, всё чинено под арабский
+     ==================================================================== */
+
+  :root {
+    --bg: #ffffff;
+    --bg-section: #fbfbfd;
+    --bg-card: #f5f5f7;
+    --ink: #1d1d1f;
+    --ink-soft: #424245;
+    --ink-muted: #6e6e73;
+    --line: #d2d2d7;
+    --line-soft: #e8e8ed;
+    --accent: #b04a2c;
+    --accent-soft: #f4e6df;
+    --accent-deep: #8a3a22;
+    --link: #b04a2c;
+    --success: #2d7a3e;
+    --success-bg: #e8f4eb;
+    --error: #c0392b;
+    --error-bg: #fbeae7;
+    --radius-lg: 18px;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #000000;
+      --bg-section: #0a0a0a;
+      --bg-card: #1d1d1f;
+      --ink: #f5f5f7;
+      --ink-soft: #d2d2d7;
+      --ink-muted: #86868b;
+      --line: #2c2c2e;
+      --line-soft: #1d1d1f;
+      --accent: #d97a55;
+      --accent-soft: #3a261c;
+      --accent-deep: #e89274;
+      --link: #d97a55;
+      --success: #6abf7c;
+      --success-bg: #1c3322;
+      --error: #e07565;
+      --error-bg: #3a1f1c;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.47059;
+    font-size: 17px;
+    letter-spacing: -0.022em;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ============= АРАБСКИЙ — ОБЩИЕ ПРАВИЛА (ИСПРАВЛЕНО) ============= */
+  .ar {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    direction: rtl;
+    text-align: right;
+    line-height: 2;
+    font-weight: 400;
+    letter-spacing: 0;
+    word-spacing: 0.05em;
+    /* критично: разрешаем перенос длинных арабских строк */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: none;
+    unicode-bidi: isolate;
+  }
+  .ar-center { text-align: center; }
+  .ar-display {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    direction: rtl;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  /* Инлайн-арабский внутри русского текста — ИЗОЛЯЦИЯ обязательна */
+  .ar-inline {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    direction: rtl;
+    unicode-bidi: isolate;
+    font-size: 1.25em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* Скрытие огласовок */
+  
+
+  /* ============= ШАПКА (как у apple.com) ============= */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(251, 251, 253, 0.8);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--line-soft);
+    height: 48px;
+  }
+  @media (prefers-color-scheme: dark) {
+    .nav { background: rgba(10, 10, 10, 0.8); }
+  }
+  .nav-inner {
+    max-width: 1024px;
+    margin: 0 auto;
+    height: 100%;
+    padding: 0 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .nav-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .nav-title .dim { color: var(--ink-muted); margin: 0 6px; }
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 28px;
+    padding: 0 12px;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font: inherit;
+    font-size: 12px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all .2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-toggle:active { transform: scale(0.96); }
+  .nav-toggle.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  /* ============= HERO ============= */
+  .hero {
+    text-align: center;
+    padding: 80px 22px 60px;
+    background: var(--bg);
+  }
+  .hero-eyebrow {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.01em;
+    margin-bottom: 8px;
+  }
+  .hero h1 {
+    font-size: clamp(40px, 8vw, 80px);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.05;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+  .hero-ar {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    direction: rtl;
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 400;
+    color: var(--ink-soft);
+    line-height: 1.4;
+    margin-bottom: 28px;
+  }
+  .hero-lead {
+    max-width: 560px;
+    margin: 0 auto;
+    font-size: clamp(17px, 2.2vw, 21px);
+    line-height: 1.4;
+    color: var(--ink-soft);
+    letter-spacing: -0.01em;
+  }
+
+  /* ============= СЕГМЕНТНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ============= */
+  .segments-wrap {
+    position: sticky;
+    top: 48px;
+    z-index: 90;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--line-soft);
+    padding: 12px 16px;
+  }
+  @media (prefers-color-scheme: dark) {
+    .segments-wrap { background: rgba(0, 0, 0, 0.8); }
+  }
+  .segments {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--bg-card);
+    border-radius: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .segments::-webkit-scrollbar { display: none; }
+  .segment {
+    flex: 1;
+    min-width: max-content;
+    padding: 8px 14px;
+    background: transparent;
+    border: none;
+    border-radius: 7px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .segment:active { transform: scale(0.97); }
+  .segment.active {
+    background: var(--bg);
+    color: var(--ink);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    .segment.active { background: #2c2c2e; }
+  }
+
+  /* ============= КОНТЕНТ ============= */
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 56px 22px 80px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .section-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+    margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: clamp(16px, 2vw, 19px);
+    color: var(--ink-soft);
+    margin-bottom: 48px;
+    max-width: 540px;
+    line-height: 1.5;
+  }
+
+  /* ============= ДИАЛОГ ============= */
+  .dialogue {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 8px 0;
+    margin-bottom: 56px;
+    overflow: hidden;
+  }
+  .dialogue-line {
+    padding: 18px 24px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--line-soft);
+    transition: background .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .dialogue-line:last-of-type { border-bottom: none; }
+  .dialogue-line:active { background: var(--line-soft); }
+
+  .speaker-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+    margin-bottom: 6px;
+  }
+  .dialogue-line.hashim .speaker-label { color: var(--accent); }
+  .dialogue-line.teacher .speaker-label { color: var(--success); }
+
+  .line-ar {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    direction: rtl;
+    text-align: right;
+    font-size: clamp(17px, 4vw, 22px);
+    line-height: 2;
+    color: var(--ink);
+    word-wrap: normal;
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+  .line-tr {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 10px;
+    line-height: 1.5;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .3s ease, margin-top .3s ease;
+  }
+  .dialogue-line.expanded .line-tr {
+    max-height: 200px;
+    margin-top: 12px;
+  }
+  .dialogue-line.expanded { background: var(--bg); }
+
+  /* ============= ГРАММАТИЧЕСКИЕ БЛОКИ ============= */
+  .grammar {
+    margin-bottom: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .grammar:first-of-type { border-top: none; padding-top: 0; }
+  .grammar-num {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 8px;
+    letter-spacing: 0.04em;
+  }
+  .grammar h3 {
+    font-size: clamp(24px, 4vw, 32px);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .grammar-ar {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    direction: rtl;
+    font-size: clamp(28px, 5vw, 40px);
+    color: var(--accent);
+    margin-bottom: 24px;
+    line-height: 1.4;
+  }
+  .grammar p {
+    font-size: clamp(16px, 2vw, 18px);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .grammar p:last-child { margin-bottom: 0; }
+
+  /* Карточка с примером — отдельный блок, чтобы арабский не ломал поток */
+  .example {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin: 20px 0;
+  }
+  .example-ar {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    direction: rtl;
+    text-align: right;
+    font-size: clamp(19px, 3.6vw, 26px);
+    line-height: 1.8;
+    color: var(--ink);
+    word-wrap: normal;
+    word-break: keep-all;
+    margin-bottom: 8px;
+  }
+  .example-tr {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+  }
+
+  /* Разбор предложения — упрощено для мобильного */
+  .parse {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 28px 20px;
+    margin: 24px 0;
+  }
+  .parse-row {
+    direction: rtl;
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    font-size: clamp(22px, 4vw, 28px);
+    text-align: center;
+    margin-bottom: 6px;
+    line-height: 1.6;
+  }
+  .parse-row .accent { color: var(--accent); font-weight: 700; }
+  .parse-tags {
+    direction: rtl;
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    font-size: clamp(13px, 2.5vw, 15px);
+    color: var(--ink-muted);
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .parse-divider {
+    height: 1px;
+    background: var(--line);
+    margin: 16px auto;
+    width: 60%;
+  }
+
+  /* Таблица إنّ + местоимения — БЕЗОПАСНАЯ для мобильного */
+  .pronouns {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 8px 4px;
+    margin: 24px 0;
+    overflow: hidden;
+  }
+  .pronoun-row {
+    direction: rtl;
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    font-size: clamp(18px, 3.6vw, 22px);
+    text-align: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line-soft);
+    line-height: 1.6;
+    word-wrap: normal;
+    word-break: keep-all;
+    white-space: nowrap;
+  }
+  .pronoun-row:last-child { border-bottom: none; }
+  .pronoun-row .op { color: var(--ink-muted); font-size: 0.7em; margin: 0 8px; }
+  .pronoun-row .res { color: var(--accent); font-weight: 700; }
+
+  /* Сетка форм для ذو */
+  .du-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 24px 0;
+  }
+  @media (min-width: 600px) {
+    .du-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  .du-cell {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 18px 12px;
+    text-align: center;
+  }
+  .du-cell .ar-form {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    direction: rtl;
+    font-size: clamp(24px, 4.5vw, 30px);
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .du-cell .lbl {
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  /* ============= СЛОВАРЬ ============= */
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  @media (min-width: 480px) {
+    .vocab-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 720px) {
+    .vocab-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .vocab-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    cursor: pointer;
+    transition: all .25s;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .vocab-card:active { transform: scale(0.98); }
+  .vocab-card.flipped { background: var(--accent-soft); }
+
+  .vocab-ar {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    direction: rtl;
+    text-align: right;
+    font-size: clamp(24px, 4.5vw, 28px);
+    color: var(--ink);
+    line-height: 1.5;
+    margin-bottom: 4px;
+    word-wrap: normal;
+    word-break: keep-all;
+  }
+  .vocab-plural {
+    direction: rtl;
+    text-align: right;
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    font-size: 15px;
+    color: var(--ink-muted);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .vocab-tr {
+    font-size: 15px;
+    color: var(--ink-soft);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .3s, padding-top .3s, margin-top .3s, border-top-color .3s;
+    border-top: 1px solid transparent;
+  }
+  .vocab-card.flipped .vocab-tr {
+    max-height: 80px;
+    padding-top: 12px;
+    margin-top: 12px;
+    border-top-color: rgba(176, 74, 44, 0.2);
+  }
+  .vocab-mark {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+  .vocab-card.flipped .vocab-mark { display: flex; }
+
+  /* ============= УПРАЖНЕНИЯ ============= */
+  .exercise {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 28px 22px;
+    margin-bottom: 16px;
+  }
+  .exercise-num {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .exercise-title {
+    font-size: clamp(20px, 3.5vw, 24px);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .exercise-instr {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    direction: rtl;
+    text-align: right;
+    font-size: clamp(15px, 2.8vw, 18px);
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+    line-height: 1.8;
+    word-wrap: normal;
+    word-break: keep-all;
+  }
+  .exercise-instr-ru {
+    font-size: 14px;
+    color: var(--ink-muted);
+    margin-bottom: 22px;
+    line-height: 1.5;
+  }
+
+  /* Верно/Неверно */
+  .tf-item {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .tf-item:last-of-type { border-bottom: none; }
+  .tf-text {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    direction: rtl;
+    text-align: right;
+    font-size: clamp(17px, 3.6vw, 21px);
+    line-height: 1.8;
+    word-wrap: normal;
+    word-break: keep-all;
+  }
+  .tf-buttons {
+    display: flex;
+    gap: 8px;
+    align-self: flex-end;
+  }
+  .tf-btn {
+    width: 44px;
+    height: 32px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    font-family: inherit;
+    transition: all .2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tf-btn:active { transform: scale(0.94); }
+  .tf-btn.selected.ok { background: var(--success); color: #fff; border-color: var(--success); }
+  .tf-btn.selected.no { background: var(--error); color: #fff; border-color: var(--error); }
+
+  /* Вставка إنّ */
+  .ex-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .ex-item:last-of-type { border-bottom: none; }
+  .ex-num {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 8px;
+  }
+  .ex-prompt {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    direction: rtl;
+    text-align: right;
+    font-size: clamp(17px, 3.6vw, 22px);
+    line-height: 1.8;
+    margin-bottom: 12px;
+    word-wrap: normal;
+    word-break: keep-all;
+  }
+  .ex-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg);
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    font-size: clamp(18px, 3.5vw, 22px);
+    direction: rtl;
+    text-align: right;
+    color: var(--ink);
+    transition: all .2s;
+    -webkit-appearance: none;
+  }
+  .ex-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .ex-input.correct { background: var(--success-bg); border-color: var(--success); }
+  .ex-input.wrong { background: var(--error-bg); border-color: var(--error); }
+
+  .feedback {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    display: none;
+    color: var(--ink-soft);
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: var(--success-bg); color: var(--success); }
+  .feedback.no { background: var(--error-bg); color: var(--error); }
+  .feedback .ar-correct {
+    display: block;
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    direction: rtl;
+    text-align: right;
+    font-size: 1.3em;
+    margin-top: 6px;
+    color: var(--ink);
+  }
+
+  /* Сопоставление — на мобильном кнопки крупные */
+  .match-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .match-col-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .match-stack { display: flex; flex-direction: column; gap: 8px; }
+  .match-chip {
+    padding: 12px 8px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    font-size: clamp(18px, 4vw, 22px);
+    direction: rtl;
+    cursor: pointer;
+    text-align: center;
+    transition: all .2s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .match-chip:active { transform: scale(0.96); }
+  .match-chip.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .match-chip.matched { background: var(--success-bg); border-color: var(--success); pointer-events: none; }
+  .match-chip.shake { animation: shake .35s; }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  /* Числительные */
+  .num-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .num-item:last-of-type { border-bottom: none; }
+  .num-prompt {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    direction: rtl;
+    text-align: right;
+    font-size: clamp(17px, 3.6vw, 21px);
+    line-height: 1.8;
+    margin-bottom: 12px;
+    word-wrap: normal;
+    word-break: keep-all;
+  }
+  .num-prompt .target { color: var(--accent); font-weight: 700; }
+  .num-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg);
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    font-size: clamp(18px, 3.5vw, 20px);
+    direction: rtl;
+    text-align: right;
+    color: var(--ink);
+  }
+  .num-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .num-input.correct { background: var(--success-bg); border-color: var(--success); }
+  .num-input.wrong { background: var(--error-bg); border-color: var(--error); }
+
+  /* Список оставшихся заданий */
+  .more-list {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 28px 22px;
+    margin-top: 24px;
+  }
+  .more-list h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .more-list p {
+    font-size: 14px;
+    color: var(--ink-muted);
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+  .more-list ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  @media (min-width: 600px) {
+    .more-list ul { grid-template-columns: 1fr 1fr; }
+  }
+  .more-list li {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+  .more-list li .num {
+    color: var(--accent);
+    font-weight: 600;
+    margin-right: 8px;
+  }
+
+  /* ============= ПРОГРЕСС ============= */
+  .rings {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  @media (min-width: 600px) {
+    .rings { grid-template-columns: repeat(3, 1fr); }
+  }
+  .ring-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 28px 20px;
+    text-align: center;
+  }
+  .ring-svg {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 14px;
+    display: block;
+  }
+  .ring-bg-c { stroke: var(--line); }
+  .ring-fg-c {
+    stroke: var(--accent);
+    transition: stroke-dashoffset .6s cubic-bezier(0.4, 0, 0.2, 1);
+    stroke-linecap: round;
+  }
+  .ring-pct {
+    font-size: 20px;
+    fill: var(--ink);
+    font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .ring-name {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .ring-detail {
+    font-size: 13px;
+    color: var(--ink-muted);
+  }
+
+  .quote-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 36px 24px;
+    text-align: center;
+  }
+  .quote-ar {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Arabic UI Text', 'Tahoma', sans-serif;
+    direction: rtl;
+    font-size: clamp(22px, 4vw, 28px);
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.6;
+  }
+  .quote-ru {
+    font-size: 15px;
+    color: var(--ink-muted);
+    font-style: italic;
+  }
+
+  /* Навигация между уроками */
+  .lesson-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 32px;
+  }
+  .lesson-nav-btn {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 18px 18px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: all .2s;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lesson-nav-btn:active { transform: scale(0.98); }
+  .lesson-nav-btn .dir {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-bottom: 4px;
+  }
+  .lesson-nav-btn .name {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .lesson-nav-btn.next { text-align: right; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--ink);
+    color: var(--bg);
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: transform .35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 200;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+</style>
+</head>
+<body>
+
+<!-- ============= ШАПКА ============= -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-title">
+      Том&nbsp;II <span class="dim">›</span> Урок&nbsp;1
+    </div>
+    <button class="nav-toggle active" id="tashkeelToggle" type="button">
+      الحَرَكَات
+    </button>
+  </div>
+</nav>
+
+<!-- ============= HERO ============= -->
+<header class="hero">
+  <div class="hero-eyebrow">Урок&nbsp;1</div>
+  <h1>Знакомство в&nbsp;Медине.</h1>
+  <div class="hero-ar">الدَّرْسُ الأَوَّل</div>
+  <p class="hero-lead">
+    Диалог Хашима с&nbsp;преподавателем. إنّ и&nbsp;её&nbsp;сёстры,
+    слово ذو, числительные сто и&nbsp;тысяча.
+  </p>
+</header>
+
+<!-- ============= СЕГМЕНТЫ ============= -->
+<div class="segments-wrap">
+  <div class="segments">
+    <button class="segment active" data-tab="theory" type="button">Теория</button>
+    <button class="segment" data-tab="vocab" type="button">Словарь</button>
+    <button class="segment" data-tab="exercises" type="button">Упражнения</button>
+    <button class="segment" data-tab="progress" type="button">Прогресс</button>
+  </div>
+</div>
+
+<main class="container">
+
+  <!-- ============= ТЕОРИЯ ============= -->
+  <section class="section active" id="theory">
+
+    <div class="section-eyebrow">Диалог</div>
+    <h2 class="section-title">Хашим и&nbsp;учитель.</h2>
+    <p class="section-sub">Двадцать одна реплика. Тапните по&nbsp;строке, чтобы&nbsp;увидеть перевод.</p>
+
+    <div class="dialogue" id="dialogue">
+      <div class="dialogue-line hashim" data-tr="Мир вам, милость Аллаха и Его благословение.">
+        <div class="speaker-label">Хашим</div>
+        <div class="line-ar">السَّلامُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكاتُه.</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line teacher" data-tr="И вам мир, милость Аллаха и Его благословение.">
+        <div class="speaker-label">Учитель</div>
+        <div class="line-ar">وَعَلَيْكُمُ السَّلامُ وَرَحْمَةُ اللهِ وَبَرَكاتُه.</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line hashim" data-tr="Как вы, устаз? Надеюсь, у вас всё хорошо.">
+        <div class="speaker-label">Хашим</div>
+        <div class="line-ar">كَيْفَ حالُكَ يا أُسْتاذ؟ لَعَلَّكَ بِخَيْرٍ.</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line teacher" data-tr="Хвала Аллаху. А ты как, Хашим? Я очень люблю тебя, Хашим. Ты — умный, старательный студент, с хорошим нравом. Ты из Пакистана или из Индии, Хашим?">
+        <div class="speaker-label">Учитель</div>
+        <div class="line-ar">الحَمْدُ لله. وَكَيْفَ حالُكَ أَنْتَ يا هاشِم؟ أَنا أُحِبُّكَ كَثيرًا يا هاشِم. إنَّكَ طالِبٌ ذَكِيٌّ وَمُجْتَهِدٌ وَذُو خُلُقٍ. أَمِنْ باكِسْتانَ أَنْتَ أَمْ مِنَ الهِنْدِ يا هاشِم؟</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line hashim" data-tr="Я из Индии.">
+        <div class="speaker-label">Хашим</div>
+        <div class="line-ar">إنّي مِنَ الهِنْدِ.</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line teacher" data-tr="А твой товарищ, который только что вышел с тобой из класса, — он тоже из Индии?">
+        <div class="speaker-label">Учитель</div>
+        <div class="line-ar">وَزَميلُكَ الذي خَرَجَ مَعَكَ الآنَ مِنَ الفَصْلِ، أَهُوَ أَيْضًا مِنَ الهِنْدِ؟</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line hashim" data-tr="Нет, он из Пакистана.">
+        <div class="speaker-label">Хашим</div>
+        <div class="line-ar">لا، إنَّهُ مِنْ باكِسْتانَ.</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line teacher" data-tr="Твои часы — красивые, Хашим. Они из Японии?">
+        <div class="speaker-label">Учитель</div>
+        <div class="line-ar">إنَّ ساعَتَكَ جَميلَةٌ يا هاشِم. أَمِنَ اليابانِ هي؟</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line hashim" data-tr="Нет, они из Индии.">
+        <div class="speaker-label">Хашим</div>
+        <div class="line-ar">لا، إنَّها مِنَ الهِنْدِ.</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line teacher" data-tr="Они дорогие или дешёвые?">
+        <div class="speaker-label">Учитель</div>
+        <div class="line-ar">أَغالِيَةٌ هِيَ أَمْ رَخيصَةٌ؟</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line hashim" data-tr="Они очень дешёвые. Всего за сто рупий.">
+        <div class="speaker-label">Хашим</div>
+        <div class="line-ar">إنَّها رَخيصَةٌ جِدًّا. إنَّها بِمِائَةِ رُوبِيَّةٍ فَقَطْ.</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line teacher" data-tr="Сколько у тебя братьев, Хашим?">
+        <div class="speaker-label">Учитель</div>
+        <div class="line-ar">كَمْ أَخًا لَكَ يا هاشِم؟</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line hashim" data-tr="У меня три брата.">
+        <div class="speaker-label">Хашим</div>
+        <div class="line-ar">لي ثَلاثَةُ إخْوَةٍ.</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line teacher" data-tr="Они студенты?">
+        <div class="speaker-label">Учитель</div>
+        <div class="line-ar">أَطُلّابٌ هُمْ؟</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line hashim" data-tr="Нет, они торговцы.">
+        <div class="speaker-label">Хашим</div>
+        <div class="line-ar">لا، إنَّهُمْ تُجّارٌ.</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line teacher" data-tr="А сколько у тебя сестёр?">
+        <div class="speaker-label">Учитель</div>
+        <div class="line-ar">وَكَمْ أُخْتًا لَكَ؟</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line hashim" data-tr="У меня четыре сестры.">
+        <div class="speaker-label">Хашим</div>
+        <div class="line-ar">لي أَرْبَعُ أَخَواتٍ.</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line teacher" data-tr="Они сейчас в Индии?">
+        <div class="speaker-label">Учитель</div>
+        <div class="line-ar">أَفي الهِنْدِ هُنَّ الآنَ؟</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line hashim" data-tr="Нет, они здесь, в Медине, с моим отцом и матерью.">
+        <div class="speaker-label">Хашим</div>
+        <div class="line-ar">لا، إنَّهُنَّ هُنا بِالمَدينَةِ المُنَوَّرَةِ مَعَ أَبي وَأُمّي.</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line teacher" data-tr="Они студентки?">
+        <div class="speaker-label">Учитель</div>
+        <div class="line-ar">أَطالِباتٌ هُنَّ؟</div>
+        <div class="line-tr"></div>
+      </div>
+      <div class="dialogue-line hashim" data-tr="Нет, они учительницы в средней школе.">
+        <div class="speaker-label">Хашим</div>
+        <div class="line-ar">لا، إنَّهُنَّ مُدَرِّساتٌ بِالمَدْرَسَةِ الثّانَوِيَّةِ.</div>
+        <div class="line-tr"></div>
+      </div>
+    </div>
+
+    <!-- Грамматика 1 -->
+    <div class="grammar">
+      <div class="grammar-num">Грамматика · 1</div>
+      <h3>إنَّ и&nbsp;её&nbsp;сёстры.</h3>
+      <div class="grammar-ar">إنَّ وَأَخَواتُها</div>
+
+      <p>В первом томе именное предложение строилось из двух частей: подлежащего и сказуемого. Оба стоят в раф‘е — именительном. Например:</p>
+
+      <div class="example">
+        <div class="example-ar">المُدَرِّسُ جَديدٌ.</div>
+        <div class="example-tr">Учитель новый.</div>
+      </div>
+
+      <p>Когда перед таким предложением ставится частица إنَّ, картина меняется. Подлежащее переходит в насб — винительный, а сказуемое остаётся в раф‘. Само подлежащее теперь называется «اسم إنّ», сказуемое — «خبر إنّ». Сравните:</p>
+
+      <div class="parse">
+        <div class="parse-row">جَميلَةٌ &nbsp; السَّيّارَةُ</div>
+        <div class="parse-tags">الخَبَر &nbsp;&nbsp; المُبْتَدَأ</div>
+        <div class="parse-divider"></div>
+        <div class="parse-row">جَميلَةٌ &nbsp; السَّيّارَةَ &nbsp; <span class="accent">إنَّ</span></div>
+        <div class="parse-tags">خَبَر إنَّ &nbsp;&nbsp; اسْم إنَّ &nbsp;&nbsp; حَرْف</div>
+      </div>
+
+      <p>إنّ — не одна. У неё есть «сёстры»: لَعَلَّ (надеюсь, что), كَأَنَّ (словно), لَكِنَّ (но), لَيْتَ (если бы). Все они работают одинаково: ставят имя в насб, а сказуемое оставляют в раф‘. На этом уроке мы знакомимся с самой إنّ и её первой сестрой لَعَلَّ.</p>
+
+      <p>Значение إنّ — усиление, «поистине», «действительно». В русском часто не переводится, но в арабском работает как смысловая опора. لَعَلَّ означает «возможно» или «надеюсь, что»:</p>
+
+      <div class="example">
+        <div class="example-ar">لَعَلَّكَ بِخَيْرٍ.</div>
+        <div class="example-tr">Надеюсь, у тебя всё хорошо.</div>
+      </div>
+
+      <p>Когда إنّ соединяется с местоимением, оно «прирастает» к ней слитно. Полная таблица:</p>
+
+      <div class="pronouns">
+        <div class="pronoun-row">إنَّ <span class="op">+</span> هُوَ <span class="op">=</span> <span class="res">إنَّهُ</span></div>
+        <div class="pronoun-row">إنَّ <span class="op">+</span> هِيَ <span class="op">=</span> <span class="res">إنَّها</span></div>
+        <div class="pronoun-row">إنَّ <span class="op">+</span> هُمْ <span class="op">=</span> <span class="res">إنَّهُمْ</span></div>
+        <div class="pronoun-row">إنَّ <span class="op">+</span> هُنَّ <span class="op">=</span> <span class="res">إنَّهُنَّ</span></div>
+        <div class="pronoun-row">إنَّ <span class="op">+</span> أَنْتَ <span class="op">=</span> <span class="res">إنَّكَ</span></div>
+        <div class="pronoun-row">إنَّ <span class="op">+</span> أَنْتِ <span class="op">=</span> <span class="res">إنَّكِ</span></div>
+        <div class="pronoun-row">إنَّ <span class="op">+</span> أَنْتُمْ <span class="op">=</span> <span class="res">إنَّكُمْ</span></div>
+        <div class="pronoun-row">إنَّ <span class="op">+</span> أَنْتُنَّ <span class="op">=</span> <span class="res">إنَّكُنَّ</span></div>
+        <div class="pronoun-row">إنَّ <span class="op">+</span> أَنا <span class="op">=</span> <span class="res">إنَّني / إنّي</span></div>
+        <div class="pronoun-row">إنَّ <span class="op">+</span> نَحْنُ <span class="op">=</span> <span class="res">إنَّنا / إنّا</span></div>
+      </div>
+
+      <p>С первым лицом единственного числа и с نحن есть две формы — полная и сокращённая. Обе правильные, обе встречаются в речи и тексте.</p>
+    </div>
+
+    <!-- Грамматика 2 -->
+    <div class="grammar">
+      <div class="grammar-num">Грамматика · 2</div>
+      <h3>Слово ذو — обладатель.</h3>
+      <div class="grammar-ar">ذُو، ذاتُ، ذَوُو، ذَواتُ</div>
+
+      <p>Слово ذو значит «обладающий чем-то», «имеющий что-то». В русском почти всегда переводится оборотом «с» или «у которого есть». В уроке встречается фраза:</p>
+
+      <div class="example">
+        <div class="example-ar">طالِبٌ ذَكِيٌّ وَمُجْتَهِدٌ وَذُو خُلُقٍ.</div>
+        <div class="example-tr">Студент умный, старательный, с хорошим нравом (букв. «обладатель нрава»).</div>
+      </div>
+
+      <p>За ذو обязательно идёт идафа — то, чем человек обладает, в родительном падеже. Само ذو склоняется как «отец» и «брат»: в раф‘е — ذُو, в насбе — ذا, в джарре — ذي.</p>
+
+      <p>Четыре формы по роду и числу:</p>
+
+      <div class="du-grid">
+        <div class="du-cell"><div class="ar-form">ذُو</div><div class="lbl">муж. ед.</div></div>
+        <div class="du-cell"><div class="ar-form">ذاتُ</div><div class="lbl">жен. ед.</div></div>
+        <div class="du-cell"><div class="ar-form">ذَوُو</div><div class="lbl">муж. мн.</div></div>
+        <div class="du-cell"><div class="ar-form">ذَواتُ</div><div class="lbl">жен. мн.</div></div>
+      </div>
+
+      <div class="example">
+        <div class="example-ar">مُديرُنا ذُو قامَةٍ طَويلَةٍ.</div>
+        <div class="example-tr">Наш директор высокого роста.</div>
+      </div>
+      <div class="example">
+        <div class="example-ar">هذِهِ الطّالِبَةُ ذاتُ خُلُقٍ.</div>
+        <div class="example-tr">У этой студентки хороший нрав.</div>
+      </div>
+      <div class="example">
+        <div class="example-ar">هؤلاءِ الطُّلّابُ ذَوُو خُلُقٍ.</div>
+        <div class="example-tr">У этих студентов хороший нрав.</div>
+      </div>
+    </div>
+
+    <!-- Грамматика 3 -->
+    <div class="grammar">
+      <div class="grammar-num">Грамматика · 3</div>
+      <h3>Сто и&nbsp;тысяча.</h3>
+      <div class="grammar-ar">مِائَة، أَلْف</div>
+
+      <p>На этом уроке появляются два больших числительных: مِائَة — сто, и أَلْف — тысяча. Оба работают одинаково: за ними идёт считаемое слово в единственном числе и в родительном падеже.</p>
+
+      <p>Мы говорим не «сто рупий» как «рупии — много», а буквально «сотня рупии» — одно лицо рупии:</p>
+
+      <div class="example">
+        <div class="example-ar">مِائَةُ رُوبِيَّةٍ.</div>
+        <div class="example-tr">Сто рупий.</div>
+      </div>
+
+      <div class="example">
+        <div class="example-ar">أَلْفُ رَجُلٍ.</div>
+        <div class="example-tr">Тысяча мужчин (букв. «тысяча мужчины»).</div>
+      </div>
+
+      <p>Слово после числительного не меняется по роду. مِائَة остаётся в одной форме и для мужского, и для женского:</p>
+
+      <div class="example">
+        <div class="example-ar">مِائَةُ رَجُلٍ &nbsp;/&nbsp; مِائَةُ امْرَأَةٍ.</div>
+        <div class="example-tr">Сто мужчин / сто женщин.</div>
+      </div>
+
+      <p>Обратите внимание на написание مِائَة: там есть «немая» алиф, которая не читается, но пишется. В современных текстах часто пишут مِئَة без неё, но классическая форма — стандарт.</p>
+    </div>
+
+  </section>
+
+  <!-- ============= СЛОВАРЬ ============= -->
+  <section class="section" id="vocab">
+    <div class="section-eyebrow">Словарь</div>
+    <h2 class="section-title">Четырнадцать новых слов.</h2>
+    <p class="section-sub">Тапните по&nbsp;карточке, чтобы&nbsp;увидеть перевод. Когда&nbsp;откроете все&nbsp;— кольцо словаря замкнётся.</p>
+
+    <div class="vocab-grid" id="vocabGrid"></div>
+  </section>
+
+  <!-- ============= УПРАЖНЕНИЯ ============= -->
+  <section class="section" id="exercises">
+    <div class="section-eyebrow">Упражнения</div>
+    <h2 class="section-title">Тринадцать заданий.</h2>
+    <p class="section-sub">Здесь работают четыре интерактивных. Остальные показаны списком.</p>
+
+    <!-- Верно/Неверно -->
+    <div class="exercise">
+      <div class="exercise-num">№&nbsp;2</div>
+      <div class="exercise-title">Верно или неверно</div>
+      <div class="exercise-instr">ضَعْ هذِهِ العَلامَةَ (✓) أَمامَ الجُمَلِ الصَّحيحَةِ، وَهذِهِ العَلامَةَ (✗) أَمامَ الجُمَلِ الَّتي لَيْسَتْ صَحيحَةً.</div>
+      <div class="exercise-instr-ru">Поставьте&nbsp;✓ напротив верных предложений по&nbsp;тексту и&nbsp;✗ напротив неверных.</div>
+      <div id="tfList"></div>
+    </div>
+
+    <!-- Вставить إنّ -->
+    <div class="exercise">
+      <div class="exercise-num">№&nbsp;4</div>
+      <div class="exercise-title">Добавьте إنّ</div>
+      <div class="exercise-instr">أَدْخِلْ (إنَّ) عَلى الجُمَلِ الآتِيَةِ.</div>
+      <div class="exercise-instr-ru">Перепишите предложение, добавив إنّ в&nbsp;начало. Слитная форма с&nbsp;местоимением — обязательна.</div>
+      <div id="innaList"></div>
+    </div>
+
+    <!-- Сопоставление -->
+    <div class="exercise">
+      <div class="exercise-num">№&nbsp;3</div>
+      <div class="exercise-title">Соедините пары</div>
+      <div class="exercise-instr">صِلْ بَيْنَ الضَّميرِ وَصورَتِهِ بَعْدَ إنَّ.</div>
+      <div class="exercise-instr-ru">Тапните местоимение слева, потом&nbsp;его форму с&nbsp;إنّ&nbsp;справа.</div>
+
+      <div class="match-cols">
+        <div>
+          <div class="match-col-title">Местоимение</div>
+          <div class="match-stack" id="matchLeft"></div>
+        </div>
+        <div>
+          <div class="match-col-title">Форма с إنّ</div>
+          <div class="match-stack" id="matchRight"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Числительные -->
+    <div class="exercise">
+      <div class="exercise-num">№&nbsp;12</div>
+      <div class="exercise-title">Запишите число прописью</div>
+      <div class="exercise-instr">اُكْتُبِ العَدَدَ بِالحُروفِ.</div>
+      <div class="exercise-instr-ru">Замените цифру арабской записью числительного.</div>
+      <div id="numList"></div>
+    </div>
+
+    <!-- Остальное -->
+    <div class="more-list">
+      <h3>Остальные задания</h3>
+      <p>В&nbsp;полной версии все&nbsp;13 будут интерактивными.</p>
+      <ul>
+        <li><span class="num">№&nbsp;1</span>Ответы на&nbsp;вопросы по&nbsp;тексту</li>
+        <li><span class="num">№&nbsp;5</span>Чтение примеров с&nbsp;إنّ</li>
+        <li><span class="num">№&nbsp;6</span>Вставка إنّ + окончания</li>
+        <li><span class="num">№&nbsp;7</span>Составить вопрос с أَمْ</li>
+        <li><span class="num">№&nbsp;8</span>Наблюдение примеров с&nbsp;ذو</li>
+        <li><span class="num">№&nbsp;9</span>Преобразовать по&nbsp;образцу</li>
+        <li><span class="num">№&nbsp;10</span>Вставить لَعَلَّ</li>
+        <li><span class="num">№&nbsp;11</span>غالٍ или&nbsp;غالِيَة</li>
+        <li><span class="num">№&nbsp;13</span>Составить предложение</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============= ПРОГРЕСС ============= -->
+  <section class="section" id="progress">
+    <div class="section-eyebrow">Прогресс</div>
+    <h2 class="section-title">Ваш путь по&nbsp;уроку.</h2>
+    <p class="section-sub">Обновляется автоматически. Сохраняется в&nbsp;браузере.</p>
+
+    <div class="rings">
+      <div class="ring-card">
+        <svg class="ring-svg" viewBox="0 0 96 96">
+          <circle class="ring-bg-c" cx="48" cy="48" r="40" fill="none" stroke-width="7"/>
+          <circle class="ring-fg-c" id="ringTheory" cx="48" cy="48" r="40" fill="none" stroke-width="7"
+            stroke-dasharray="251" stroke-dashoffset="251" transform="rotate(-90 48 48)"/>
+          <text class="ring-pct" id="ringTheoryPct" x="48" y="55" text-anchor="middle">0%</text>
+        </svg>
+        <div class="ring-name">Теория</div>
+        <div class="ring-detail" id="ringTheoryDetail">Откройте диалог</div>
+      </div>
+      <div class="ring-card">
+        <svg class="ring-svg" viewBox="0 0 96 96">
+          <circle class="ring-bg-c" cx="48" cy="48" r="40" fill="none" stroke-width="7"/>
+          <circle class="ring-fg-c" id="ringVocab" cx="48" cy="48" r="40" fill="none" stroke-width="7"
+            stroke-dasharray="251" stroke-dashoffset="251" transform="rotate(-90 48 48)"/>
+          <text class="ring-pct" id="ringVocabPct" x="48" y="55" text-anchor="middle">0%</text>
+        </svg>
+        <div class="ring-name">Словарь</div>
+        <div class="ring-detail" id="ringVocabDetail">0 из 14</div>
+      </div>
+      <div class="ring-card">
+        <svg class="ring-svg" viewBox="0 0 96 96">
+          <circle class="ring-bg-c" cx="48" cy="48" r="40" fill="none" stroke-width="7"/>
+          <circle class="ring-fg-c" id="ringEx" cx="48" cy="48" r="40" fill="none" stroke-width="7"
+            stroke-dasharray="251" stroke-dashoffset="251" transform="rotate(-90 48 48)"/>
+          <text class="ring-pct" id="ringExPct" x="48" y="55" text-anchor="middle">0%</text>
+        </svg>
+        <div class="ring-name">Упражнения</div>
+        <div class="ring-detail" id="ringExDetail">0 из 4</div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-ar">إنَّ مَعَ العُسْرِ يُسْرًا</div>
+      <div class="quote-ru">Поистине, вместе с&nbsp;тягостью — облегчение</div>
+    </div>
+
+    <div class="lesson-nav">
+      <a class="lesson-nav-btn prev" href="#" onclick="return false;">
+        <div class="dir">← Том&nbsp;I</div>
+        <div class="name">Завершён</div>
+      </a>
+      <a class="lesson-nav-btn next" href="#" onclick="return false;">
+        <div class="dir">Урок&nbsp;2 →</div>
+        <div class="name">الدَّرْسُ الثاني</div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast">Сохранено</div>
+
+<script>
+// ====================== ДАННЫЕ ======================
+const VOCAB = [
+  { ar: 'ذَكِيٌّ', plural: 'ج أَذْكِياءُ', tr: 'умный' },
+  { ar: 'غَبِيٌّ', plural: 'ج أَغْبِياءُ', tr: 'глупый' },
+  { ar: 'خُلُقٌ', plural: 'ج أَخْلاقٌ', tr: 'нрав, характер' },
+  { ar: 'مِائَةٌ', plural: '', tr: 'сто' },
+  { ar: 'أَلْفٌ', plural: '', tr: 'тысяча' },
+  { ar: 'رُوبِيَّةٌ', plural: 'ج رُوبِيّاتٌ', tr: 'рупия' },
+  { ar: 'مُتَزَوِّجٌ', plural: '', tr: 'женатый' },
+  { ar: 'عَزَبٌ', plural: 'ج أَعْزابٌ', tr: 'холостой' },
+  { ar: 'يَهُودِيٌّ', plural: 'ج يَهُودٌ', tr: 'еврей, иудей' },
+  { ar: 'مُعْجَمٌ', plural: 'ج مَعاجِمُ', tr: 'словарь' },
+  { ar: 'دُولارٌ', plural: 'ج دُولاراتٌ', tr: 'доллар' },
+  { ar: 'صَفْحَةٌ', plural: 'ج صَفَحاتٌ', tr: 'страница' },
+  { ar: 'ناجِحٌ', plural: 'ج ناجِحُونَ', tr: 'успешный, прошедший' },
+  { ar: 'غالٍ', plural: '', tr: 'дорогой (по цене)' },
+];
+
+const TF_ITEMS = [
+  { ar: 'هاشِمٌ طالِبٌ كَسْلانُ.', correct: false, hint: 'В тексте Хашим назван مُجْتَهِد — старательный.' },
+  { ar: 'هاشِمٌ طالِبٌ مُجْتَهِدٌ.', correct: true },
+  { ar: 'ساعَتُهُ رَخيصَةٌ.', correct: true },
+  { ar: 'ساعَتُهُ غالِيَةٌ.', correct: false, hint: 'Хашим говорит, что часы дешёвые — رَخيصَة جِدًّا.' },
+  { ar: 'ساعَتُهُ بِأَلْفِ رُوبِيَّةٍ.', correct: false, hint: 'В тексте — بِمِائَةِ رُوبِيَّةٍ, за сто рупий.' },
+  { ar: 'ساعَتُهُ بِمِائَةِ رُوبِيَّةٍ.', correct: true },
+];
+
+const INNA_ITEMS = [
+  { prompt: 'هُوَ تاجِرٌ.', answer: 'إنَّهُ تاجِرٌ.' },
+  { prompt: 'أَنا طالِبٌ.', answer: 'إنّي طالِبٌ.', alt: ['إنَّني طالِبٌ.'] },
+  { prompt: 'هُمْ مِنَ اليابانِ.', answer: 'إنَّهُمْ مِنَ اليابانِ.' },
+  { prompt: 'أَنْتُمْ أَذْكِياءُ.', answer: 'إنَّكُمْ أَذْكِياءُ.' },
+];
+
+const MATCH_PAIRS = [
+  { left: 'هُوَ', right: 'إنَّهُ' },
+  { left: 'هِيَ', right: 'إنَّها' },
+  { left: 'أَنْتَ', right: 'إنَّكَ' },
+  { left: 'هُمْ', right: 'إنَّهُمْ' },
+  { left: 'نَحْنُ', right: 'إنَّنا' },
+];
+
+const NUM_ITEMS = [
+  { prompt: 'هذا التِّلْفازُ بِـ ١٠٠٠ رِيالٍ.', target: '١٠٠٠', answer: 'ألف' },
+  { prompt: 'في هذا الكِتابِ ١٠٠ صَفْحَةٍ.', target: '١٠٠', answer: 'مائة', alt: ['مئة'] },
+  { prompt: 'عِنْدي ١٠٠٠ دُولارٍ.', target: '١٠٠٠', answer: 'ألف' },
+];
+
+// ====================== СОСТОЯНИЕ ======================
+const STATE = {
+  flipped: new Set(),
+  tfAnswered: new Map(),
+  innaAnswered: new Map(),
+  matchAnswered: new Set(),
+  numAnswered: new Map(),
+  selectedMatchLeft: null,
+  scrollProgress: 0,
+};
+
+// ====================== ВКЛАДКИ ======================
+document.querySelectorAll('.segment').forEach(seg => {
+  seg.addEventListener('click', () => {
+    document.querySelectorAll('.segment').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    seg.classList.add('active');
+    document.getElementById(seg.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (seg.dataset.tab === 'progress') updateRings();
+  });
+});
+
+// ====================== ХАРАКАТЫ ======================
+const TASHKEEL_REGEX = /[\u064B-\u0652\u0670]/g;
+// Удаление огласовок без разрушения вязи
+function stripTashkeel(text) { return text.replace(/[\u064B-\u0652\u0670]/g, ''); }
+
+
+// Сохраняем оригиналы и подготавливаем версии без харакатов
+const arabicElements = [];
+function indexArabicText() {
+  const selectors = ['.line-ar', '.example-ar', '.vocab-ar', '.exercise-instr', '.tf-text', '.ex-prompt', '.num-prompt', '.ar-correct', '.hero-ar', '.grammar-ar', '.parse-row', '.parse-tags', '.pronoun-row', '.du-cell .ar-form', '.quote-ar', '.lesson-nav-btn .name'];
+  selectors.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      const original = el.textContent;
+      if (/[\u064B-\u0652\u0670]/.test(original)) {
+        arabicElements.push({ el, withTashkeel: original, without: stripTashkeel(original) });
+      }
+    });
+  });
+}
+
+function applyTashkeel(show) {
+  arabicElements.forEach(item => {
+    item.el.textContent = show ? item.withTashkeel : item.without;
+  });
+}
+
+document.getElementById('tashkeelToggle').addEventListener('click', (e) => {
+  const isActive = e.currentTarget.classList.toggle('active');
+  applyTashkeel(isActive);
+});
+
+// ====================== ДИАЛОГ ======================
+document.querySelectorAll('.dialogue-line').forEach(line => {
+  line.querySelector('.line-tr').textContent = line.dataset.tr;
+  line.addEventListener('click', () => {
+    line.classList.toggle('expanded');
+    updateRings();
+  });
+});
+
+// ====================== СЛОВАРЬ ======================
+function renderVocab() {
+  const grid = document.getElementById('vocabGrid');
+  grid.innerHTML = '';
+  VOCAB.forEach((w, i) => {
+    const card = document.createElement('div');
+    card.className = 'vocab-card';
+    if (STATE.flipped.has(i)) card.classList.add('flipped');
+    card.innerHTML = `
+      <div class="vocab-mark">✓</div>
+      <div class="vocab-ar">${w.ar}</div>
+      ${w.plural ? `<div class="vocab-plural">${w.plural}</div>` : ''}
+      <div class="vocab-tr">${w.tr}</div>
+    `;
+    card.addEventListener('click', () => {
+      card.classList.toggle('flipped');
+      if (card.classList.contains('flipped')) {
+        STATE.flipped.add(i);
+        toast();
+      }
+      updateRings();
+    });
+    grid.appendChild(card);
+  });
+}
+
+// ====================== ВЕРНО/НЕВЕРНО ======================
+function renderTF() {
+  const list = document.getElementById('tfList');
+  list.innerHTML = '';
+  TF_ITEMS.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'tf-item';
+    div.innerHTML = `
+      <div class="tf-text">${item.ar}</div>
+      <div class="tf-buttons">
+        <button class="tf-btn" data-val="true" data-i="${i}" type="button">✓</button>
+        <button class="tf-btn" data-val="false" data-i="${i}" type="button">✗</button>
+      </div>
+      <div class="feedback" id="tf-fb-${i}"></div>
+    `;
+    list.appendChild(div);
+  });
+  list.querySelectorAll('.tf-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = +btn.dataset.i;
+      if (STATE.tfAnswered.has(i)) return;
+      const val = btn.dataset.val === 'true';
+      const correct = val === TF_ITEMS[i].correct;
+      btn.classList.add('selected', correct ? 'ok' : 'no');
+      STATE.tfAnswered.set(i, correct);
+      const fb = document.getElementById(`tf-fb-${i}`);
+      if (correct) {
+        fb.className = 'feedback show ok';
+        fb.textContent = 'Верно.';
+      } else {
+        fb.className = 'feedback show no';
+        fb.innerHTML = `Не&nbsp;совсем. ${TF_ITEMS[i].hint || ''}`;
+      }
+      toast();
+      updateRings();
+    });
+  });
+}
+
+// ====================== ВСТАВИТЬ إنّ ======================
+function normalizeArabic(s) {
+  return s.replace(TASHKEEL_REGEX, '').replace(/\s+/g, ' ').replace(/[.،؟!]/g, '').trim();
+}
+
+function renderInna() {
+  const list = document.getElementById('innaList');
+  list.innerHTML = '';
+  INNA_ITEMS.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'ex-item';
+    div.innerHTML = `
+      <div class="ex-num">${i+1}</div>
+      <div class="ex-prompt">${item.prompt}</div>
+      <input type="text" class="ex-input" id="inna-in-${i}" placeholder="Перепишите с إنّ…" autocomplete="off" autocorrect="off" />
+      <div class="feedback" id="inna-fb-${i}"></div>
+    `;
+    list.appendChild(div);
+  });
+  list.querySelectorAll('.ex-input').forEach(inp => {
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); checkInna(inp); }
+    });
+    inp.addEventListener('blur', () => { if (inp.value.trim()) checkInna(inp); });
+  });
+}
+
+function checkInna(inp) {
+  const i = +inp.id.split('-').pop();
+  const item = INNA_ITEMS[i];
+  const user = normalizeArabic(inp.value);
+  const expected = [item.answer, ...(item.alt || [])].map(normalizeArabic);
+  const correct = expected.includes(user);
+  inp.classList.remove('correct', 'wrong');
+  inp.classList.add(correct ? 'correct' : 'wrong');
+  STATE.innaAnswered.set(i, correct);
+  const fb = document.getElementById(`inna-fb-${i}`);
+  if (correct) {
+    fb.className = 'feedback show ok';
+    fb.textContent = 'Хорошо.';
+  } else {
+    fb.className = 'feedback show no';
+    fb.innerHTML = `Правильный вариант: <span class="ar-correct">${item.answer}</span>`;
+  }
+  toast();
+  updateRings();
+}
+
+// ====================== СОПОСТАВЛЕНИЕ ======================
+function renderMatch() {
+  const left = document.getElementById('matchLeft');
+  const right = document.getElementById('matchRight');
+  left.innerHTML = '';
+  right.innerHTML = '';
+  const rightItems = MATCH_PAIRS.map((p, i) => ({ ...p, idx: i }));
+  for (let i = rightItems.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [rightItems[i], rightItems[j]] = [rightItems[j], rightItems[i]];
+  }
+  MATCH_PAIRS.forEach((p, i) => {
+    const c = document.createElement('div');
+    c.className = 'match-chip';
+    c.dataset.idx = i; c.dataset.side = 'left';
+    c.textContent = p.left;
+    left.appendChild(c);
+  });
+  rightItems.forEach(p => {
+    const c = document.createElement('div');
+    c.className = 'match-chip';
+    c.dataset.idx = p.idx; c.dataset.side = 'right';
+    c.textContent = p.right;
+    right.appendChild(c);
+  });
+  document.querySelectorAll('.match-chip').forEach(c => {
+    c.addEventListener('click', () => onMatchClick(c));
+  });
+
+}
+
+function onMatchClick(chip) {
+  if (chip.classList.contains('matched')) return;
+  if (chip.dataset.side === 'left') {
+    document.querySelectorAll('#matchLeft .match-chip.selected').forEach(c => c.classList.remove('selected'));
+    chip.classList.add('selected');
+    STATE.selectedMatchLeft = chip;
+  } else {
+    if (!STATE.selectedMatchLeft) return;
+    const li = +STATE.selectedMatchLeft.dataset.idx;
+    const ri = +chip.dataset.idx;
+    if (li === ri) {
+      STATE.selectedMatchLeft.classList.remove('selected');
+      STATE.selectedMatchLeft.classList.add('matched');
+      chip.classList.add('matched');
+      STATE.matchAnswered.add(li);
+      STATE.selectedMatchLeft = null;
+      toast();
+      updateRings();
+    } else {
+      chip.classList.add('shake');
+      setTimeout(() => chip.classList.remove('shake'), 400);
+    }
+  }
+}
+
+// ====================== ЧИСЛИТЕЛЬНЫЕ ======================
+function renderNum() {
+  const list = document.getElementById('numList');
+  list.innerHTML = '';
+  NUM_ITEMS.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'num-item';
+    const html = item.prompt.replace(item.target, `<span class="target">${item.target}</span>`);
+    div.innerHTML = `
+      <div class="ex-num">${i+1}</div>
+      <div class="num-prompt">${html}</div>
+      <input type="text" class="num-input" id="num-in-${i}" placeholder="прописью…" autocomplete="off" autocorrect="off" />
+      <div class="feedback" id="num-fb-${i}"></div>
+    `;
+    list.appendChild(div);
+  });
+  list.querySelectorAll('.num-input').forEach(inp => {
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); checkNum(inp); }
+    });
+    inp.addEventListener('blur', () => { if (inp.value.trim()) checkNum(inp); });
+  });
+}
+
+function checkNum(inp) {
+  const i = +inp.id.split('-').pop();
+  const item = NUM_ITEMS[i];
+  const user = normalizeArabic(inp.value);
+  const expected = [item.answer, ...(item.alt || [])].map(normalizeArabic);
+  const correct = expected.includes(user);
+  inp.classList.remove('correct', 'wrong');
+  inp.classList.add(correct ? 'correct' : 'wrong');
+  STATE.numAnswered.set(i, correct);
+  const fb = document.getElementById(`num-fb-${i}`);
+  if (correct) {
+    fb.className = 'feedback show ok';
+    fb.textContent = 'Верно.';
+  } else {
+    fb.className = 'feedback show no';
+    fb.innerHTML = `Правильный вариант: <span class="ar-correct">${item.answer}</span>`;
+  }
+  toast();
+  updateRings();
+}
+
+// ====================== ПРОГРЕСС ======================
+function setRing(elId, pctId, detailId, pct, text) {
+  const circ = 2 * Math.PI * 40;
+  document.getElementById(elId).setAttribute('stroke-dashoffset', circ * (1 - pct));
+  document.getElementById(pctId).textContent = Math.round(pct * 100) + '%';
+  if (text) document.getElementById(detailId).textContent = text;
+}
+
+function updateRings() {
+  const total = document.querySelectorAll('.dialogue-line').length;
+  const opened = document.querySelectorAll('.dialogue-line.expanded').length;
+  const tPct = Math.min(1, (opened / total) * 0.6 + STATE.scrollProgress * 0.4);
+  setRing('ringTheory', 'ringTheoryPct', 'ringTheoryDetail', tPct,
+    tPct >= 1 ? 'Пройдено' : `${opened} из ${total} строк`);
+
+  const vPct = STATE.flipped.size / VOCAB.length;
+  setRing('ringVocab', 'ringVocabPct', 'ringVocabDetail', vPct,
+    `${STATE.flipped.size} из ${VOCAB.length}`);
+
+  let solved = 0;
+  if ([...STATE.tfAnswered.values()].filter(Boolean).length >= TF_ITEMS.length * 0.7) solved++;
+  if ([...STATE.innaAnswered.values()].filter(Boolean).length >= INNA_ITEMS.length * 0.7) solved++;
+  if (STATE.matchAnswered.size === MATCH_PAIRS.length) solved++;
+  if ([...STATE.numAnswered.values()].filter(Boolean).length >= NUM_ITEMS.length * 0.7) solved++;
+  setRing('ringEx', 'ringExPct', 'ringExDetail', solved / 4, `${solved} из 4`);
+}
+
+window.addEventListener('scroll', () => {
+  if (!document.getElementById('theory').classList.contains('active')) return;
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  STATE.scrollProgress = Math.min(1, window.scrollY / h);
+  updateRings();
+}, { passive: true });
+
+let toastTimer;
+function toast() {
+  const el = document.getElementById('toast');
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 1200);
+}
+
+// ====================== ИНИЦ ======================
+renderVocab();
+renderTF();
+renderInna();
+renderMatch();
+renderNum();
+updateRings();
+
+</script>
+</body>
+</html>
