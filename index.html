@@ -205,7 +205,7 @@
 <script>
 (async function() {
   try {
-    const res = await fetch('data/lesson-index.json');
+    const res = await fetch('data/lessons.json');
     if (!res.ok) throw new Error('Не удалось загрузить список уроков');
     const data = await res.json();
 
