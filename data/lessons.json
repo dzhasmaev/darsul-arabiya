@@ -1,0 +1,43 @@
+[
+  {
+    "id": 1,
+    "title_ru": "Знакомство в Медине",
+    "title_ar": "الدَّرْسُ الأَوَّل",
+    "available": true
+  },
+  {
+    "id": 2,
+    "title_ru": "Хишам и Билял",
+    "title_ar": "الدَّرْسُ الثَّاني",
+    "available": true
+  },
+  { "id": 3, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الثَّالِث", "available": false },
+  { "id": 4, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الرَّابِع", "available": false },
+  { "id": 5, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الخامِس", "available": false },
+  { "id": 6, "title_ru": "Скоро", "title_ar": "الدَّرْسُ السَّادِس", "available": false },
+  { "id": 7, "title_ru": "Скоро", "title_ar": "الدَّرْسُ السَّابِع", "available": false },
+  { "id": 8, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الثَّامِن", "available": false },
+  { "id": 9, "title_ru": "Скоро", "title_ar": "الدَّرْسُ التَّاسِع", "available": false },
+  { "id": 10, "title_ru": "Скоро", "title_ar": "الدَّرْسُ العاشِر", "available": false },
+  { "id": 11, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الحادي عَشَر", "available": false },
+  { "id": 12, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الثَّاني عَشَر", "available": false },
+  { "id": 13, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الثَّالِث عَشَر", "available": false },
+  { "id": 14, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الرَّابِع عَشَر", "available": false },
+  { "id": 15, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الخامِس عَشَر", "available": false },
+  { "id": 16, "title_ru": "Скоро", "title_ar": "الدَّرْسُ السَّادِس عَشَر", "available": false },
+  { "id": 17, "title_ru": "Скоро", "title_ar": "الدَّرْسُ السَّابِع عَشَر", "available": false },
+  { "id": 18, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الثَّامِن عَشَر", "available": false },
+  { "id": 19, "title_ru": "Скоро", "title_ar": "الدَّرْسُ التَّاسِع عَشَر", "available": false },
+  { "id": 20, "title_ru": "Скоро", "title_ar": "الدَّرْسُ العِشْرونَ", "available": false },
+  { "id": 21, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الحادي والعِشْرونَ", "available": false },
+  { "id": 22, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الثَّاني والعِشْرونَ", "available": false },
+  { "id": 23, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الثَّالِث والعِشْرونَ", "available": false },
+  { "id": 24, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الرَّابِع والعِشْرونَ", "available": false },
+  { "id": 25, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الخامِس والعِشْرونَ", "available": false },
+  { "id": 26, "title_ru": "Скоро", "title_ar": "الدَّرْسُ السَّادِس والعِشْرونَ", "available": false },
+  { "id": 27, "title_ru": "Скоро", "title_ar": "الدَّرْسُ السَّابِع والعِشْرونَ", "available": false },
+  { "id": 28, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الثَّامِن والعِشْرونَ", "available": false },
+  { "id": 29, "title_ru": "Скоро", "title_ar": "الدَّرْسُ التَّاسِع والعِشْرونَ", "available": false },
+  { "id": 30, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الثَّلاثونَ", "available": false },
+  { "id": 31, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الحادي والثَّلاثونَ", "available": false }
+]

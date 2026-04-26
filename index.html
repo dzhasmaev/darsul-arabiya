@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Дарсу-ль-арабия · Том II</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-section: #fbfbfd;
+    --bg-card: #f5f5f7;
+    --ink: #1d1d1f;
+    --ink-soft: #424245;
+    --ink-muted: #6e6e73;
+    --line: #d2d2d7;
+    --line-soft: #e8e8ed;
+    --accent: #b04a2c;
+    --accent-soft: #f4e6df;
+    --radius-lg: 18px;
+    --radius: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #000000;
+      --bg-section: #0a0a0a;
+      --bg-card: #1d1d1f;
+      --ink: #f5f5f7;
+      --ink-soft: #d2d2d7;
+      --ink-muted: #86868b;
+      --line: #2c2c2e;
+      --line-soft: #1d1d1f;
+      --accent: #d97a55;
+      --accent-soft: #3a261c;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.47;
+    font-size: 17px;
+    letter-spacing: -0.022em;
+    min-height: 100vh;
+  }
+
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(251, 251, 253, 0.8);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--line-soft);
+    height: 48px;
+  }
+  @media (prefers-color-scheme: dark) {
+    .nav { background: rgba(10, 10, 10, 0.8); }
+  }
+  .nav-inner {
+    max-width: 1024px; margin: 0 auto; height: 100%;
+    padding: 0 22px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-title { font-size: 14px; font-weight: 500; }
+  .nav-title .dim { color: var(--ink-muted); margin: 0 6px; }
+
+  .hero {
+    text-align: center;
+    padding: 90px 22px 70px;
+  }
+  .hero-eyebrow {
+    font-size: 14px; font-weight: 600;
+    color: var(--accent); margin-bottom: 8px;
+  }
+  .hero h1 {
+    font-size: clamp(40px, 8vw, 80px);
+    font-weight: 600;
+    letter-spacing: -0.015em; line-height: 1.05;
+    margin-bottom: 18px;
+  }
+  .hero-ar {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Tahoma', sans-serif;
+    direction: rtl;
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 400;
+    color: var(--ink-soft); line-height: 1.4;
+    margin-bottom: 28px;
+  }
+  .hero-lead {
+    max-width: 580px; margin: 0 auto;
+    font-size: clamp(17px, 2.2vw, 21px);
+    line-height: 1.4; color: var(--ink-soft);
+  }
+
+  .container {
+    max-width: 1024px; margin: 0 auto;
+    padding: 36px 22px 80px;
+  }
+
+  .section-title {
+    font-size: clamp(22px, 4vw, 28px);
+    font-weight: 600; letter-spacing: -0.01em;
+    margin-bottom: 22px;
+  }
+
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media (min-width: 600px) {
+    .lessons-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 900px) {
+    .lessons-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .lesson-card {
+    background: var(--bg-card); border-radius: var(--radius);
+    padding: 22px 20px;
+    text-decoration: none; color: var(--ink);
+    transition: all .25s;
+    -webkit-tap-highlight-color: transparent;
+    display: flex; flex-direction: column;
+    min-height: 170px;
+  }
+  .lesson-card:active { transform: scale(0.97); }
+  .lesson-card.locked {
+    opacity: 0.4; cursor: default; pointer-events: none;
+  }
+
+  .lesson-num {
+    font-size: 13px; color: var(--accent);
+    font-weight: 600; margin-bottom: 8px;
+  }
+  .lesson-card-title {
+    font-size: 17px; font-weight: 600;
+    line-height: 1.25; margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .lesson-card-ar {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Tahoma', sans-serif;
+    direction: rtl; text-align: right;
+    font-size: 16px; color: var(--ink-soft);
+    line-height: 1.5; margin-bottom: 10px;
+  }
+  .lesson-topic {
+    font-size: 13px; color: var(--ink-muted);
+    line-height: 1.4; margin-bottom: 14px;
+    flex: 1;
+  }
+
+  .lesson-progress {
+    display: flex; gap: 6px; margin-top: auto;
+  }
+  .lesson-progress-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--line);
+  }
+  .lesson-progress-dot.done { background: var(--accent); }
+
+  .loading {
+    text-align: center; padding: 80px 22px;
+    color: var(--ink-muted);
+  }
+
+  .footer {
+    text-align: center;
+    padding: 40px 22px; color: var(--ink-muted);
+    font-size: 13px; border-top: 1px solid var(--line-soft);
+  }
+  .footer .ar {
+    font-family: 'SF Arabic', 'Geeza Pro', 'Noto Naskh Arabic', 'Tahoma', sans-serif;
+    direction: rtl;
+    font-size: 18px; color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-title">Дарсу-ль-арабия <span class="dim">·</span> Том&nbsp;II</div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-eyebrow" id="heroEyebrow"></div>
+  <h1 id="heroTitle"></h1>
+  <div class="hero-ar" id="heroAr"></div>
+  <p class="hero-lead" id="heroLead"></p>
+</header>
+
+<main class="container">
+  <h2 class="section-title">Уроки</h2>
+  <div id="lessonsGrid" class="loading">Загружаем уроки…</div>
+</main>
+
+<footer class="footer">
+  <div class="ar">إنَّ مَعَ العُسْرِ يُسْرًا</div>
+  <div>Поистине, вместе с тягостью — облегчение</div>
+</footer>
+
+<script>
+(async function() {
+  try {
+    const res = await fetch('data/lessons-index.json');
+    if (!res.ok) throw new Error('Не удалось загрузить список уроков');
+    const data = await res.json();
+
+    document.getElementById('heroEyebrow').textContent = data.course.subtitle;
+    document.getElementById('heroTitle').textContent = data.course.title_ru + '.';
+    document.getElementById('heroAr').textContent = data.course.title_ar;
+    document.getElementById('heroLead').textContent = data.course.description;
+
+    const grid = document.createElement('div');
+    grid.className = 'lessons-grid';
+
+    data.lessons.forEach(l => {
+      const key = `lesson-${String(l.id).padStart(2, '0')}-progress`;
+      const saved = localStorage.getItem(key);
+      let progress = { theory: 0, vocab: 0, exercises: 0 };
+      if (saved) {
+        try { progress = JSON.parse(saved); } catch(e) {}
+      }
+
+      const card = document.createElement(l.available ? 'a' : 'div');
+      card.className = 'lesson-card' + (l.available ? '' : ' locked');
+      if (l.available) card.href = `lesson.html?id=${l.id}`;
+
+      const dotsHtml = l.available ? `
+        <div class="lesson-progress">
+          <div class="lesson-progress-dot ${(progress.theory || 0) > 30 ? 'done' : ''}"></div>
+          <div class="lesson-progress-dot ${(progress.vocab || 0) > 30 ? 'done' : ''}"></div>
+          <div class="lesson-progress-dot ${(progress.exercises || 0) > 30 ? 'done' : ''}"></div>
+        </div>
+      ` : '';
+
+      card.innerHTML = `
+        <div class="lesson-num">Урок ${l.id}</div>
+        <div class="lesson-card-title">${l.title_ru}</div>
+        <div class="lesson-card-ar">${l.title_ar}</div>
+        <div class="lesson-topic">${l.topic}</div>
+        ${dotsHtml}
+      `;
+      grid.appendChild(card);
+    });
+
+    const container = document.getElementById('lessonsGrid');
+    container.innerHTML = '';
+    container.className = '';
+    container.appendChild(grid);
+  } catch (e) {
+    document.getElementById('lessonsGrid').textContent = 'Не удалось загрузить список уроков.';
+  }
+})();
+</script>
+</body>
+</html>
