@@ -233,21 +233,6 @@
       html += renderExercise(ex);
     });
 
-    var placeholders = L.exercises.filter(function (e) { return e.type === 'placeholder'; });
-    if (placeholders.length) {
-      html += '<div class="more-list glass">' +
-        '<h3>Остальные задания</h3>' +
-        '<p>В полной версии все ' + totalEx + ' будут интерактивными.</p>' +
-        '<ul>' +
-          placeholders.map(function (p) {
-            return '<li><span class="num">№&nbsp;' + p.num + '</span>' + p.title + '</li>';
-          }).join('') +
-        '</ul>' +
-      '</div>';
-    }
-    return html;
-  }
-
   function renderExercise(ex) {
     var inner = '';
     if (ex.type === 'true_false') inner = renderTF(ex);
