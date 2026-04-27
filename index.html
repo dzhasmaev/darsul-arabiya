@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Дарсу-ль-арабия — Мединский курс</title>
+<link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-eyebrow">Том&nbsp;II</div>
+  <h1>Дарсу-ль-арабия.</h1>
+  <div class="hero-ar">دُروسُ اللُّغَةِ العَرَبِيَّة</div>
+  <p class="hero-lead">
+    Мединский курс. Тридцать один урок второго тома. Диалоги, грамматика, словарь и упражнения с проверкой. Прогресс сохраняется автоматически.
+  </p>
+</header>
+
+<div class="total-wrap">
+  <div class="total glass">
+    <svg class="total-ring" viewBox="0 0 64 64">
+      <circle class="total-ring-bg" cx="32" cy="32" r="26" fill="none" stroke-width="5"/>
+      <circle class="total-ring-fg" id="totalRing" cx="32" cy="32" r="26" fill="none" stroke-width="5"
+        stroke-dasharray="163" stroke-dashoffset="163" transform="rotate(-90 32 32)"/>
+      <text class="total-pct" id="totalPct" x="32" y="37" text-anchor="middle">0%</text>
+    </svg>
+    <div class="total-text">
+      <div class="label">Общий прогресс</div>
+      <div class="value" id="totalText">Загружаем…</div>
+    </div>
+  </div>
+</div>
+
+<main class="grid-wrap">
+  <h2 class="section-title">Уроки</h2>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer class="footer">
+  <div class="ar">إنَّ مَعَ العُسْرِ يُسْرًا</div>
+  <div>Поистине, вместе с тягостью — облегчение</div>
+</footer>
+
+<script src="assets/js/home.js"></script>
+</body>
+</html>
