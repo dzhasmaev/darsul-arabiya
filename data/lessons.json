@@ -1,7 +1,7 @@
 [
   { "id": 1, "title_ru": "Знакомство в Медине", "title_ar": "الدَّرْسُ الأَوَّل", "available": true },
   { "id": 2, "title_ru": "Хишам и Билял", "title_ar": "الدَّرْسُ الثَّاني", "available": true },
-  { "id": 3, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الثَّالِث", "available": false },
+  { "id": 3, "title_ru": "Ахмад и Али", "title_ar": "الدَّرْسُ الثَّالِث", "available": true },
   { "id": 4, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الرَّابِع", "available": false },
   { "id": 5, "title_ru": "Скоро", "title_ar": "الدَّرْسُ الخامِس", "available": false },
   { "id": 6, "title_ru": "Скоро", "title_ar": "الدَّرْسُ السَّادِس", "available": false },
