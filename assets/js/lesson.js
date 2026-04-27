@@ -226,7 +226,7 @@
     var html =
       '<div class="section-eyebrow">Упражнения</div>' +
       '<h2 class="section-title-lesson">' + totalEx + ' ' + pluralize(totalEx, 'задание', 'задания', 'заданий') + '.</h2>' +
-      '<p class="section-sub">Здесь работают ' + interactive + ' ' + pluralize(interactive, 'интерактивное', 'интерактивных', 'интерактивных') + '. Остальные показаны списком.</p>';
+
 
     L.exercises.forEach(function (ex) {
       if (ex.type === 'placeholder') return;
